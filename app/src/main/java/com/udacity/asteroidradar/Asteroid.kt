@@ -4,10 +4,12 @@ import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.squareup.moshi.JsonClass
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 @Entity(tableName = "asteroid_table")
+@JsonClass(generateAdapter = true)
 data class Asteroid(
     @PrimaryKey
     val id: Long,

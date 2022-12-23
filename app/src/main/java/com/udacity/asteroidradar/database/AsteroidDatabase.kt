@@ -13,26 +13,23 @@ abstract class AsteroidDatabase: RoomDatabase() {
 
     companion object{
 
-        //@Volatile
-        private var INSTANCE: AsteroidDatabase? = null
+        @Volatile
+        private lateinit var INSTANCE: AsteroidDatabase
 
         fun getInstance(context: Context): AsteroidDatabase{
             // To make sure it is synchronized across all threads
             synchronized(this){
-
-                var instance = INSTANCE
-                // Checks if we didn't have an instance (NULL) of the database before or not
-                if (instance == null) {
-                    instance = Room.databaseBuilder(
+                // Checks if we didn't have an instance (not initialized) of the database before or not
+                if (!::INSTANCE.isInitialized) {
+                    INSTANCE = Room.databaseBuilder(
                         context.applicationContext,
                         AsteroidDatabase::class.java,
                         "asteroid_database"
                     )
                         .fallbackToDestructiveMigration().build()
-                    INSTANCE = instance
                 }
 
-                return instance
+                return INSTANCE
             }
         }
     }

@@ -24,8 +24,11 @@ class MainFragment : Fragment() {
 
         //To navigate to the details fragment
         viewModel.navigateToAsteroidDetail.observe(viewLifecycleOwner, Observer { asteroid ->
-            this.findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
-            viewModel.doneAsteroidNavigate()
+            if(asteroid != null)
+            {
+                this.findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
+                viewModel.doneAsteroidNavigate()
+            }
         })
 
         val adapter = AsteroidAdapter(AsteroidAdapter.AsteroidClickListener { asteroid ->
@@ -42,6 +45,11 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.show_saved_menu -> viewModel.getCurrentList()
+            R.id.show_today_menu -> viewModel.getToday()
+            R.id.show_week_menu -> viewModel.getWeek()
+        }
         return true
     }
 }
