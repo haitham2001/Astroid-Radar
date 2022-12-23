@@ -1,6 +1,7 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.Constants.getCurrentDay
@@ -9,7 +10,6 @@ import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.AsteroidApi
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.AsteroidRepository
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -40,7 +40,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun refreshAdapterList(){
         viewModelScope.launch {
-            repo.refreshAsteroids()
+            try{
+                Log.i("refreshData","retrieve data")
+                repo.refreshAsteroids()
+                Log.i("refreshDataSuccessful","Succeeded to retrieve data")
+            }
+            catch (e: Exception){
+                Log.i("refreshDataUnsuccessful","Failed to retrieve data")
+            }
         }
     }
 
@@ -74,7 +81,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     //Set the current Image of the day
     private fun getImageOfDay(){
         viewModelScope.launch {
-            _picOfDay.value = AsteroidApi.getPictureOfDay()
+            try {
+                Log.i("getPicDay","retrieve image")
+                _picOfDay.value = AsteroidApi.getPictureOfDay()
+                Log.i("getPicDaySuccessful","Succeeded to retrieve image")
+            }
+            catch (e: Exception){
+                Log.i("getPicDayUnsuccessful","Failed to retrieve image")
+            }
         }
     }
 

@@ -56,3 +56,13 @@ fun bindPictureOfDay(imageView:ImageView,image: PictureOfDay?) {
         imageView.contentDescription = image.title
     }
 }
+
+@BindingAdapter("customContentDescription")
+fun customContentDescription(imageView: ImageView, check: Boolean?) {
+    check?.let {
+        when(check){
+            true-> "This Asteroid is hazardous"
+            false->"This Asteroid is not hazardous"
+        }.also { imageView.contentDescription = it }
+    }
+}
